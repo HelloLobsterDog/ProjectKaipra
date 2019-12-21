@@ -16,7 +16,7 @@ class ActionTrigger(object):
 	def matches(self, inputText, templateActions, lang = 'en-us'):
 		if lang == self.lang:
 			# matched text in the input text?
-			if self.matchedText in inputText:
+			if self.matchedText.lower() in inputText.lower():
 				# required templates in the text?
 				allMatch = True
 				for reqTemplate in self.requiredTemplateActions:

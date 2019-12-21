@@ -52,6 +52,6 @@ class GamePlayer(object):
 		
 		if not output:
 			# no action found
-			output.append('that aint a command, chief.') # TODO
+			output.append(self.water.getBadCommandtext(self.lang))
 			return output
 		

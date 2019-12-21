@@ -10,6 +10,7 @@ class Water(object):
 		self.characters = []
 		self.defaultLang = defaultLang
 		self.validationProblems = []
+		self.badCommandText = {}
 	
 	def destroy(self):
 		self.characters = []
@@ -23,6 +24,7 @@ class Water(object):
 			self.validationProblems.append('merged default lang "{}" does not match our default lang "{}"'.format(other.defaultLang, self.defaultLang))
 		for problem in other.validationProblems:
 			self.validationProblems.append(problem)
+		self.badCommandText.update(other.badCommandText)
 	
 	
 	def addNode(self, node):
@@ -55,4 +57,18 @@ class Water(object):
 			if char.id == id:
 				return char
 		return None
+		
+		
+	def addBadCommandText(self, text, lang = None):
+		if lang == None:
+			lang = self.defaultLang
+		self.badCommandText.setdefault(lang, text)
+		
+	def getBadCommandtext(self, lang = None):
+		if lang == None:
+			lang = self.defaultLang
+		default = self.badCommandText.get(self.defaultLang, None)
+		if default == None:
+			raise RuntimeError("No bad command text is set.")
+		return self.badCommandText.get(lang, default)
 	

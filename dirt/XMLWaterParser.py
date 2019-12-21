@@ -51,7 +51,7 @@ class XMLWaterParser(object):
 		output = Water(defaultLang)
 		nodeCount = 0
 		
-		# look at the children (nodes)
+		# look at the children
 		for index, child in enumerate(self.root):
 			if child.tag == 'node':
 				self.logger.debug('parsing node tag #%d', index)
@@ -60,6 +60,14 @@ class XMLWaterParser(object):
 					output.addNode(self._handleNode(child, defaultLang))
 				except BadXMLError as e:
 					self.logger.exception('Node #{} has failed to parse due to the XML being invalid. Processing of other nodes will continue in an attempt to show you as many errors at once as possible.'.format(nodeCount))
+					
+			elif child.tag == 'bad_command_error_text':
+				self.logger.debug('parsing badCommandErrorText tag (#%d)', index)
+				self._validateAttributes(child, [], ['lang'])
+				self._noTail(child)
+				self._noChildren(child)
+				output.addBadCommandText(child.text.strip(), child.attrib.get('lang', None))
+				
 			else:
 				raise BadXMLError('child tag #{} of root named "{}" not recognized'.format(index + 1, child.tag))
 		

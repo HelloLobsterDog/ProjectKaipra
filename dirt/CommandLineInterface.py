@@ -7,16 +7,25 @@ class CommandLineInterface(object):
 		self.game = gamePlayer
 	
 	def mainloop(self):
+		# start loop by printing out the node text
+		print(anglicize('\n' + self.game.displayNode()))
+	
 		while True:
-			# display text
-			print(anglicize('\n' + self.game.displayNode()))
 			# get input
 			userInput = input('\n>')
 			# specialized input handling
-			if userInput.strip() == 'exit':
+			if userInput.strip() == '': # if they say nothing, print the node text again
+				print(anglicize(self.game.displayNode()))
+				continue
+			if userInput.strip() == 'exit': # if they say exit, then exit
 				return
 			# general input handling
 			output = self.game.handleInput(userInput)
-			for out in output:
-				print(anglicize(out))
+			if output:
+				# if we ran a command with output, just display that.
+				for out in output:
+					print(anglicize(out))
+			else:
+				# we ran a command without output
+				print(anglicize('\n' + self.game.displayNode()))
 	
