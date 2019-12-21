@@ -1,5 +1,5 @@
 # Project Kaipra
-Project Kaipra is a Sci-Fi [MUD](https://en.wikipedia.org/wiki/MUD) set in the Kaipra system.
+Project Kaipra is a python-based Sci-Fi [MUD](https://en.wikipedia.org/wiki/MUD) set in the Kaipra system.
 
 Planned features include:
 * A snazzy custom setting
