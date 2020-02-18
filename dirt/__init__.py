@@ -1,20 +1,25 @@
 __version__ = '0.1.1'
 
-from dirt.Water import Water
-from dirt.Node import Node
+from .checks import *
+from .effects import *
 
-from dirt.Check import Check
-from dirt.BooleanCheck import BooleanCheck
-from dirt.ChoiceCheck import ChoiceCheck
-from dirt.ComparisonCheck import ComparisonCheck
+from .Action import Action
+from .ActionCondition import ActionCondition
+from .ActionEffect import ActionEffect
+from .ActionTrigger import ActionTrigger
+from .TemplateAction import TemplateAction
 
-from dirt.Action import Action
-from dirt.ActionTrigger import ActionTrigger
-from dirt.ActionEffect import ActionEffect
+from .Character import Character
+from .Node import Node
+from .Water import Water
 
-from dirt.Character import Character
+from .Check import Check
 
-from dirt.XMLWaterParser import XMLWaterParser
+from .Client import Client
+from .CommandLineClient import CommandLineClient
+from .Server import Server
 
-from dirt.GamePlayer import GamePlayer
-from dirt.CommandLineInterface import CommandLineInterface
+from .LangText import LangText
+
+from .util import *
+from .xmlUtil import *

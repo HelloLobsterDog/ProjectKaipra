@@ -1,5 +1,7 @@
 
+
 class ActionEffect(object):
-	def trigger(self, node, viewpointCharacter, lang = 'en-us'):
-		raise NotImplementedError('subclasses must override this method and implement it.')
+	''' Provides a template for the methods which need to be implemented by subclasses. '''
 	
+	def execute(self, character):
+		raise RuntimeError('This method must be overridden by subclasses')

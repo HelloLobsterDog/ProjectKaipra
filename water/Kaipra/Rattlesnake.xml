@@ -1,0 +1,111 @@
+<?xml version="1.0"?>
+
+<water default_lang="en-us">
+
+	<bad_command_error_text> Command not recognized. </bad_command_error_text>
+	
+	<template_action id="look">
+		<matched_text> look </matched_text>
+		<matched_text> read </matched_text>
+	</template_action>
+	<template_action id="listen">
+		<matched_text> listen </matched_text>
+		<matched_text> hear </matched_text>
+	</template_action>
+	<template_action id="smell">
+		<matched_text> smell </matched_text>
+		<matched_text> sniff </matched_text>
+	</template_action>
+	<template_action id="go">
+		<matched_text> go </matched_text>
+		<matched_text> walk </matched_text>
+	</template_action>
+	
+	
+
+	<node id="Rattlesnake Dormitories">
+		<text_block>
+			The dormitories are composed of two hallways, one on top of the other with a metal grate serving as the roof of the bottom layer and the floor of the top layer. Your room is on the bottom layer at the far end. Across from you is another room with a sign that reads “Alexander Hishan - Passenger.” There are two other doors in the bottom layer, each one with a similar sign. To the left of your room is a room with a sign that reads “Oppius Nasennius - Passenger.” Across from that room is a room with a sign that reads “Camila Kyprou - Crew.” The walls between each room, as well as the floor, are steel. The hallway is dimly lit by bar lights on the top dormitory layer. There are blinking floor lights on the ground in the hallway. To your right, at the end of the hallway is an air vent. The air coming out of the vent smells like a dead animal. There is a door opposite the vent that you remember leads out into the mess hall. What do you do?
+		</text_block>
+		<action>
+			<trigger target_for="look"> opposite room </trigger>
+			<trigger target_for="look"> room across	</trigger>
+			<trigger target_for="look"> across room </trigger>
+			<trigger target_for="look"> room Alexander </trigger>
+			<trigger target_for="look"> room Alexander Hishan </trigger>
+			<trigger target_for="look"> room Hishan </trigger>
+			<trigger target_for="look"> Alexander Hishan </trigger>
+			<trigger target_for="look"> room opposite </trigger>
+			<effect type="display_text"> You look at the door into Alexander Hishan’s room. The door is made of rusted steel and has a small window, much like your own room. The window is blocked, much like in your own room, by a slat that you can drag across it. You hear music coming from the inside of the room, and if you listen close enough you think you can pick up the sound of something hitting the ground in time with the music.</effect>
+		</action>
+		<action>
+			<trigger target_for="listen"> music </trigger>
+			<effect type="display_text"> The music is at least a millennia old, probably from Earth. It’s a fast-paced, upbeat song, but you can’t make out much else </effect>
+        </action>
+		<action>
+			<trigger target_for="look"> vent </trigger>
+			<effect type="display_text"> The vent is old and rusty. The air rushing out of the vent smells like a dead animal. There are a few loose screws that could be pried off to allow entry to the vents. </effect>
+		</action>
+		<action>
+			<trigger target_for="look"> screws </trigger>
+			<effect type="display_text"> The screws are rusted and loose. With a little force, you could pry them off easily. </effect>
+		</action>
+		<action>
+			<trigger target_for="smell"> vent </trigger>
+			<trigger target_for="smell"> vent air </trigger>
+			<trigger target_for="smell"> air vent </trigger>
+			<effect type="display_text"> The air coming out of the vent stinks of dead animal. Further sniffing reveals a slight hint of food as well. </effect>
+		</action>
+		<action>
+			<condition var="node.grate"> False </condition>
+			<trigger> pry screws </trigger>
+			<trigger> lift grate </trigger>
+			<effect type="display_text"> You remove the screws from the grate and lift the grate. The vents are now yours to explore. </effect>
+			<effect type="set_var" var="node.grate"> True </effect>
+		</action>
+		<action>
+			<condition var="node.grate"> True </condition>
+			<trigger target_for="go"> vents </trigger>
+			<trigger target_for="go"> vent </trigger>
+			<trigger uses="go"> enter vents </trigger>
+			<trigger uses="go"> enter vent </trigger>
+			<effect type="display_text"> You crawl into the vents. </effect>
+			<effect type="change_node"> Rattlesnake Dormitory Vents </effect>
+		</action>
+		
+		<state_var name="grate" type="boolean" default="False" />
+		
+	</node>
+	
+	<node id="Rattlesnake Dormitory Vents">
+		<text_block>
+			The vents are cramped and smell horrid. The walls, floor, and ceiling are covered in rust and the air is musty and stinks of dead animal. Eventually, after a while of crawling, you come upon an intersection with two possible paths forward. One goes to the left and smells of food, while the right path smells, not surprisingly, like dead animal.
+		</text_block>
+		<action>
+			<trigger target_for="go"> left </trigger>
+			<trigger target_for="go"> left path </trigger>
+			<effect type="display_text"> You take the left path, towards the area which smells like food. </effect>
+			<effect type="change_node"> Rattlesnake Mess Hall Vents </effect>
+		</action>
+		<action>
+			<trigger target_for="go"> right </trigger>
+			<trigger target_for="go"> right path </trigger>
+			<effect type="display_text"> You take the right path, towards the dead animal smell. </effect>
+			<effect type="change_node"> Rattlesnake Officer's Quarters Vents </effect>
+		</action>
+	</node>
+	
+	<node id="Rattlesnake Mess Hall Vents">
+		<text_block lang="en-us">
+			There is a strong air current coming from this area of the vents, and it smells of food. You eventually come upon another grate leading down into the mess hall. Further on there is a fan that is creating the air current that you are feeling, but otherwise it is a dead end. There is light shining through the grate up into the vent.
+		</text_block>
+		<action>
+			<trigger target_for="look"> Fan </trigger>
+			<effect type="display_text"> There is a large ventilation fan that is pushing air through the vents. It also blocks your path forward.</effect>
+		</action>
+		<action>
+			<trigger target_for="look"> Grate </trigger>
+			<effect type="display_text"> There is a grate that takes up most of the floor of the vent. It leads down into the mess hall, where you can see four people. They are all sitting at a single square table eating lunch. One of them is a female human. Sitting across from her is a Meiv'os man. Sitting next to the Meiv'os is a Aguahente man in officer's garb. Finally, there is a male human sitting next to the female human. </effect>
+		</action>
+	</node>
+</water>
