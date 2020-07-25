@@ -13,7 +13,7 @@ The major tags allowable inside the water tag, and by extension, the basic build
 Other than a handful of fairly minor tags, That's it for the water tag, and that's it for the dirt engine.
 
 ## Nodes
-Nodes represent a "current location" for characters to inhabit. All characters, at all times, are "at" one node. That said, nodes are not required to actually represent a real physical location. If your story in your game has characters walking around and interacting, nodes are probably going to map pretty readily to physical location, but can just as easily map to mental states. Nodes, therefore, are a somewhat more abstract.
+Nodes represent a "current location" for characters to inhabit. All characters, at all times, are "at" one node. That said, nodes are not required to actually represent a real physical location. If your story in your game has characters walking around and interacting, nodes are probably going to map pretty readily to physical location, but can just as easily map to mental states. Nodes, therefore, are a somewhat more abstract concept, and knowing what they contain will allow you to know what they can represent.
 
 Nodes have the following:
 * Text, print to the users of the characters that are there.
@@ -34,5 +34,5 @@ Characters have the following:
 
 ## Minor top-level tags
 
-* `<bad_command_error_text>`: This tag specifies the text to print whenever the user enters text as a command which isn't recongnized as a command. This is a text bearing tag and allows an optional lang attribute.
+* `<bad_command_error_text>`: This tag specifies the text to print whenever the user enters text as a command which isn't recognized as a command. This is a text bearing tag and allows an optional lang attribute.
 * `<template_action>`: TODO
