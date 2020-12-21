@@ -9,6 +9,7 @@ The major tags allowable inside the water tag, and by extension, the basic build
 
 * Nodes
 * Characters
+* Skill Trees
 
 Other than a handful of fairly minor tags, That's it for the water tag, and that's it for the dirt engine.
 
@@ -31,6 +32,9 @@ Characters have the following:
 * Template actions, a set of blueprint actions the character can do, given a target or additional data. If a node has the action "look at door", the character will have a template action for looking, and the target will be the door. The template action enforces restrictions like the character being temporarily blinded, or not being able to see ultraviolet light, etc.
 
 [Full documentation on configuring characters is here.](Character.md)
+
+## Skill Trees
+.
 
 ## Minor top-level tags
 

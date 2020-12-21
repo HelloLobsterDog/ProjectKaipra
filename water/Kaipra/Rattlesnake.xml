@@ -22,6 +22,28 @@
 	</template_action>
 	
 	
+	
+	<skill_tree id="PC">
+		<skill id="pistol_proficiency">
+			<text name="Pistol Proficiency">
+				Gain 1 additional damage with all pistol class weapons
+			</text>
+		</skill>
+		<skill id="fan_the_hammer">
+			<text name="Fan the Hammer">
+				Unleash the remainder of your cylinder on the enemy. Requires a revolver class weapon. Take -2 to hit on all shots taken during this action.
+			</text>
+			<prerequisite id="pistol_proficiency" weight="0.8"/>
+		</skill>
+		<skill id="quick_draw">
+			<text name="Quick Draw">
+				Draw your weapon with no penalty.
+			</text>
+			<prerequisite id="pistol_proficiency" weight="0.6"/>
+		</skill>
+	</skill_tree>
+	
+	
 
 	<node id="Rattlesnake Dormitories">
 		<text_block>

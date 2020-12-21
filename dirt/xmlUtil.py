@@ -9,6 +9,11 @@ class BadXMLError(RuntimeError):
 	''' subclass of RuntimeError which indicates more or less the same thing, but is more specific '''
 	pass
 	
+	
+def validateHasText(element):
+	''' If element does not have text, it raises an exception '''
+	if element.text == None or element.text.strip() == '':
+		raise BadXMLError('element "{}" requires text in the tag.'.format(element.tag))
 
 def validateNoChildren(element):
 	''' If element has any children, it raises an exception. '''

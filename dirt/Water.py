@@ -6,6 +6,7 @@ from .LangText import LangText
 from .Node import Node
 from .Character import Character
 from .TemplateAction import TemplateAction
+from .SkillTree import SkillTree
 
 class Water(object):
 	def __init__(self, server = None, xmlFilePath = None, xmlString = None):
@@ -78,6 +79,10 @@ class Water(object):
 					self.logger.debug('parsing template action tag (#%d)', index + 1)
 					self.addTemplateAction(TemplateAction(xml = child, defaultLang = self.defaultLang))
 					
+				elif child.tag == 'skill_tree':
+					self.logger.debug("parsing skill tree tag (#%d)", index + 1)
+					self.addSkillTree(SkillTree(xml = child, defaultLang = self.default_lang))
+					
 				else:
 					raise BadXMLError('child tag #{} of root named "{}" not recognized'.format(index + 1, child.tag))
 					
@@ -106,6 +111,7 @@ class Water(object):
 		# find things that lack text in the default language
 		# total up all languages, and find cases where bad command error text does not cover all the languages (including default)
 		# total up all languages, and find things within the water which lack translation into all languages
+		# skills with prerequisites actually point to ids that exist
 	
 	
 	def setServer(self, server):
