@@ -30,11 +30,14 @@ Characters have the following:
 * Controller, the AI or player which decides which actions the character does.
 * A current node. This is where the character is at, and if the character is the player, they'll see the node's text when they play the game.
 * Template actions, a set of blueprint actions the character can do, given a target or additional data. If a node has the action "look at door", the character will have a template action for looking, and the target will be the door. The template action enforces restrictions like the character being temporarily blinded, or not being able to see ultraviolet light, etc.
+* A list of skill trees and a list of which skills they have in those trees. Skills are the main way characters get more powerful and gain abilities.
 
 [Full documentation on configuring characters is here.](Character.md)
 
 ## Skill Trees
-.
+A skill tree is a graph of all skills available to someone who has access to the tree. They're defined as a list of skills, which define prerequisites, which is how you define the order in which characters can gain the skills within the tree.
+
+[Full documentation on configuring skill trees and skills is here.](Skills.md)
 
 ## Minor top-level tags
 
