@@ -1,6 +1,7 @@
 import logging
 
 from .xmlUtil import *
+from .LangText import LangText
 
 class Skill(object):
 	def __init__(self, element = None, defaultLang = None):

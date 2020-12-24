@@ -1,6 +1,7 @@
 import logging
 
 from .xmlUtil import *
+from .Skill import Skill
 
 class SkillTree(object):
 	def __init__(self, element = None, defaultLang = None):

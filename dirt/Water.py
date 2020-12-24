@@ -15,6 +15,7 @@ class Water(object):
 		self.nodes = []
 		self.characters = []
 		self.templateActions = []
+		self.skillTrees = []
 		
 		self.charactersWithActions = []
 		self.validationIssues = []
@@ -81,7 +82,7 @@ class Water(object):
 					
 				elif child.tag == 'skill_tree':
 					self.logger.debug("parsing skill tree tag (#%d)", index + 1)
-					self.addSkillTree(SkillTree(xml = child, defaultLang = self.default_lang))
+					self.addSkillTree(SkillTree(element = child, defaultLang = self.defaultLang))
 					
 				else:
 					raise BadXMLError('child tag #{} of root named "{}" not recognized'.format(index + 1, child.tag))
@@ -201,3 +202,11 @@ class Water(object):
 				return action
 		return None
 	
+	def getSkillTree(self, id):
+		for skillTree in self.skillTrees:
+			if skillTree.id == id:
+				return skillTree
+		return None
+	
+	def addSkillTree(self, skillTree):
+		self.skillTrees.append(skillTree)
