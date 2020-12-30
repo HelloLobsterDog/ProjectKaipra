@@ -5,6 +5,7 @@ Nodes can have the following:
 * **Text blocks**: One is required per node, but if your water supports multiple languages, there can be one per language. The text block is the text sent to the player when they are in the node. The text can vary based on the state of the node, the state of your character, or the state of other characters in the node.
 * **Actions**: Actions defined on the node are made available to any character in the node.
 * **State**: Nodes can hold variables, available to modify the text block or to influence actions.
+* **Characters**: Characters can be defined inside a node as a convenience feature. This is exactly the same as defining them at the top level, but their default node is set to the node you define them in.
 
 ## The Node Tag
 Here's a full example node tag, with everything in it which is possible to include:
@@ -50,3 +51,10 @@ There must be 1 text_block tag in each node. If there are multiple present, each
 
 ### state_var tags
 [state_var](common_state_var.md) tags are common among nodes and characters, and in both spots, they follow the same rules, and do the same thing. They are used to create and hold data onto the thing they are defined under (in this case nodes). They provide a variable of a certain type, with a name, and a default value. The data can be accessed and changed as a part of actions, conditions, changing `text_block` text, or via template action code. see the [state_var page itself](common_state_var.md] for more information.
+
+## Other things not in the example
+
+### character tags
+Characters can be defined in nodes, purely as a convenience feature. Defining a character inside a node works exactly the same as defining them at the top level, but the character's default node is set to the node you're defining them in. If you do this, you cannot specify the character's default node inside [the character tag](Character.md).
+
+The only reason to do this is as an organization mechanism; you do this if the character always starts in the node (maybe this node is the guard's room), or never leaves it (maybe it's a gun turret), or if it's easier for you to remember where they're defined if you define them in the node (maybe you're making a ship with passengers, and this node is the room they're staying in, so they always start here, but they can leave it).

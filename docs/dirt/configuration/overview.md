@@ -10,6 +10,7 @@ The major tags allowable inside the water tag, and by extension, the basic build
 * Nodes
 * Characters
 * Skill Trees
+* Species
 
 Other than a handful of fairly minor tags, That's it for the water tag, and that's it for the dirt engine.
 
@@ -26,13 +27,14 @@ Nodes themselves have the following:
 ## Characters
 Characters represent all movable, acting things. A player is a character, people are characters, but so is a gun turret, and so is a rat. Anything that does things on it's own is a character.
 
-Characters have the following:
-* Controller, the AI or player which decides which actions the character does.
-* A current node. This is where the character is at, and if the character is the player, they'll see the node's text when they play the game.
-* Template actions, a set of blueprint actions the character can do, given a target or additional data. If a node has the action "look at door", the character will have a template action for looking, and the target will be the door. The template action enforces restrictions like the character being temporarily blinded, or not being able to see ultraviolet light, etc.
-* A list of skill trees and a list of which skills they have in those trees. Skills are the main way characters get more powerful and gain abilities.
-
 [Full documentation on configuring characters is here.](Character.md)
+
+## Species
+A species defines the default description, actions, template actions, stats, etc available to a character of that species. They are used to make it easier to define a character, because you don't have to re-define all the stat ranges, descriptions and actions available to all the charaters of that species.
+
+Examples: Human, Meiv'os, Mantid, OGX-465 model gun drone, Rat.
+
+[Full documentation on configuring species is here.](Species.md)
 
 ## Skill Trees
 A skill tree is a graph of all skills available to someone who has access to the tree. They're defined as a list of skills, which define prerequisites, which is how you define the order in which characters can gain the skills within the tree.
@@ -42,4 +44,3 @@ A skill tree is a graph of all skills available to someone who has access to the
 ## Minor top-level tags
 
 * `<bad_command_error_text>`: This tag specifies the text to print whenever the user enters text as a command which isn't recognized as a command. This is a text bearing tag and allows an optional lang attribute.
-* `<template_action>`: TODO
