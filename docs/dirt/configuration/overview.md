@@ -44,3 +44,4 @@ A skill tree is a graph of all skills available to someone who has access to the
 ## Minor top-level tags
 
 * `<bad_command_error_text>`: This tag specifies the text to print whenever the user enters text as a command which isn't recognized as a command. This is a text bearing tag and allows an optional lang attribute.
+* `<template_action>`: TODO

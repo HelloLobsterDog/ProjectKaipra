@@ -58,3 +58,6 @@ There must be 1 text_block tag in each node. If there are multiple present, each
 Characters can be defined in nodes, purely as a convenience feature. Defining a character inside a node works exactly the same as defining them at the top level, but the character's default node is set to the node you're defining them in. If you do this, you cannot specify the character's default node inside [the character tag](Character.md).
 
 The only reason to do this is as an organization mechanism; you do this if the character always starts in the node (maybe this node is the guard's room), or never leaves it (maybe it's a gun turret), or if it's easier for you to remember where they're defined if you define them in the node (maybe you're making a ship with passengers, and this node is the room they're staying in, so they always start here, but they can leave it).
+
+### Template actions
+TODO

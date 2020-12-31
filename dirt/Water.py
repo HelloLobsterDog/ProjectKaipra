@@ -64,8 +64,8 @@ class Water(object):
 				if child.tag == 'node':
 					self.logger.debug('parsing node tag #%d', index)
 					try:
-						self.addNode(Node(xmlElement = child, defaultLang = self.defaultLang))
-					except BadXMLError as e:
+						self.addNode(Node(xmlElement = child, defaultLang = self.defaultLang, water = self))
+					except BadXMLError as e: # TODO: put this same sort of thing down below in the other major tags
 						allGood = False
 						self.logger.exception('Node #{} has failed to parse due to the XML being syntactically correct, but invalid. Processing of other nodes will continue in an attempt to show you as many errors at once as possible.'.format(index + 1))
 						
@@ -83,6 +83,14 @@ class Water(object):
 				elif child.tag == 'skill_tree':
 					self.logger.debug("parsing skill tree tag (#%d)", index + 1)
 					self.addSkillTree(SkillTree(element = child, defaultLang = self.defaultLang))
+					
+				elif child.tag == 'character':
+					self.logger.debug('Parsing character tag (#%d)', index + 1)
+					self.addCharacter(Character(owningWater = self, xml = child))
+					
+				elif child.tag == 'species':
+					self.logger.debug('Parsing species tag (#%d)', index + 1)
+					raise NotImplementedError('TODO: make species') # TODO make species
 					
 				else:
 					raise BadXMLError('child tag #{} of root named "{}" not recognized'.format(index + 1, child.tag))

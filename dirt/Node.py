@@ -3,10 +3,11 @@ import logging
 from .LangText import LangText
 from .Action import Action
 from .checks import checkFactory
+from .Character import Character
 from .xmlUtil import *
 
 class Node(object):
-	def __init__(self, xmlElement = None, defaultLang = None):
+	def __init__(self, xmlElement = None, defaultLang = None, water = None):
 		self.id = None
 		self.textBlock = LangText()
 		self.checks = []
@@ -15,6 +16,7 @@ class Node(object):
 		self.templateActions = []
 		
 		self.defaultLang = defaultLang
+		self.water = water
 		self.logger = logging.getLogger('dirt.node')
 		
 		if xmlElement != None:
@@ -26,7 +28,7 @@ class Node(object):
 			
 			self.logger.debug('creating node with ID %s', self.id.strip())
 			
-			sortedChildren = sortChildren(xmlElement, ['text_block', 'check', 'state_var', 'action', 'template_action'])
+			sortedChildren = sortChildren(xmlElement, ['text_block', 'check', 'state_var', 'action', 'template_action', 'character'])
 			if not 'text_block' in sortedChildren:
 				raise RuntimeError('no text_block was found. At least one is required - what are you going to show the player?')
 			
@@ -61,6 +63,10 @@ class Node(object):
 			for templateAction in sortedChildren.get('template_action', []):
 				self.logger.debug('handling template action tag')
 				self.addTemplateAction(TemplateAction(xml = templateAction, defaultLang = self.defaultLang))
+			
+			for character in sortedChildren.get('character', []):
+				self.logger.debug('handling character action tag in node')
+				self.water.addCharacter(Character(owningWater = self.water, xml = character, node = self))
 			
 	def addTextBlock(self, text, lang):
 		self.textBlock.add(lang, text)

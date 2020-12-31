@@ -1,17 +1,53 @@
 import logging
 
 from .effects import BadCommandTextEffect
+from .xmlUtil import *
 
 class Character(object):
-	def __init__(self, owningWater = None):
+	def __init__(self, owningWater = None, xml = None, node = None):
 		self.id = None
 		self.currentNodeID = None
 		self.controller = None
 		self.templateActions = []
+		self.state = {}
+		self.actions = []
 		
 		self.water = owningWater
 		self.queuedEffects = []
 		self.logger = logging.getLogger('dirt.character')
+		
+		if xml != None:
+			self.logger.debug('handling character tag')
+			validateNoTextOrTail(element)
+			validateAttributes(element, ['id'], ['species'])
+			
+			self.id = element.attrib['id']
+			self.speciesID = element.attrib['species']
+			
+			# children
+			sortedChildren = sortChildren(xml, ['state_var', 'action', 'template_action'])
+			
+			for stateVar in sortedChildren.get('state_var', []):
+				self.logger.debug('handling state_var')
+				validateNoChildren(stateVar)
+				validateNoTextOrTail(stateVar)
+				validateAttributes(stateVar, ['name', 'type', 'default'], [])
+				self.state[stateVar.attrib['name']] = parseState(stateVar.attrib['name'], stateVar.attrib['type'], stateVar, self.logger)
+			
+			for action in sortedChildren.get('action', []):
+				self.logger.debug('handling action tag')
+				self.addAction(Action(action, self.defaultLang))
+			
+			for templateAction in sortedChildren.get('template_action', []):
+				self.logger.debug('handling template action tag')
+				self.addTemplateAction(TemplateAction(xml = templateAction, defaultLang = self.defaultLang))
+				
+			# TODO: this is gonna get much more complicated
+			# TODO: if node is present, but xml specifies a node, blow up.
+			
+			# validation stuff
+			# TODO: set node from constructor arg if not provided in xml
+			# TODO: if we don't have a node at this point, and it's not provided in constructor, it was never specified, so we need to blow up.
 		
 	def getNodeLangText(self):
 		return self.water.getNode(self.currentNodeID).textBlock
@@ -25,6 +61,7 @@ class Character(object):
 		# compile a list of actions that can be performed
 		possible = []
 		possible.extend(self.getNode().actions)
+		possible.extend(self.actions)
 		self.logger.debug('All possible actions: [%s]', ", ".join([str(x) for x in possible]))
 		
 		# see if we match any of them
@@ -76,12 +113,15 @@ class Character(object):
 		state = dict()
 		for key, val in self.getNode().state.items():
 			state['node.' + key] = val
+		for key, val in self.state.items():
+			state['char.' + key] = val
 		return state
 	
 	def getWriteDict(self):
 		# note to self: changes/additions to this method need to be mirrored in getStateDict
 		out = dict()
 		out['node'] = self.getNode().state
+		out['char'] = self.state
 		return out
 		
 	def enqueueEffect(self, effect):
@@ -137,4 +177,7 @@ class Character(object):
 		if self.water.getNode(nodeID) == None:
 			raise RuntimeError('node ID "' + nodeID + '" does not exist.')
 		self.currentNodeID = nodeID
+		
+	def addAction(self, action):
+		self.actions.append(action)
 	
