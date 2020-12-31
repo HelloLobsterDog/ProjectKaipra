@@ -41,7 +41,7 @@ If you don't specify `ignore_prerequisites="True"` in your skill tag, and the ch
 [action](common_action.md) tags are common among nodes and characters, and in both spots, they follow the same rules, and do the same thing. When in characters, they provide characters the ability to perform the action anywhere, by typing in a command which fits the `trigger`s, and as long as the `condition`s are met, the `effect`s occur. See the [action page itself](common_action.md) for more information.
 
 ### state_var tags
-[state_var](common_state_var.md) tags are common among nodes and characters, and in both spots, they follow the same rules, and do the same thing. They are used to create and hold data onto the thing they are defined under (in this case nodes). They provide a variable of a certain type, with a name, and a default value. The data can be accessed and changed as a part of actions, conditions, changing `text_block` text, or via template action code. see the [state_var page itself](common_state_var.md] for more information.
+[state_var](common_state_var.md) tags are common among nodes and characters, and in both spots, they follow the same rules, and do the same thing. They are used to create and hold data onto the thing they are defined under (in this case nodes). They provide a variable of a certain type, with a name, and a default value. The data can be accessed and changed as a part of actions, conditions, changing `text_block` text, or via template action code. see the [state_var page itself](common_state_var.md) for more information.
 
 # An example
 
