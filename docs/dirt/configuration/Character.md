@@ -3,13 +3,13 @@ Characters represent all movable, acting things. A player is a character, people
 
 Characters have the following:
 * A species, defining the type of thing the character is, like a Human, a Meiv'os, or a Rat. Species come along with a variety of default actions, stats, etc. See below.
-* Controller, the AI or player which decides which actions the character does.
+* TODO Controller, the AI or player which decides which actions the character does.
 * A current node. This is where the character is at, and if the character is the player, they'll see the node's text when they play the game.
 * Template actions, a set of blueprint actions the character can do, given a target or additional data. If a node has the action "look at door", the character will have a template action for looking, and the target will be the door. The template action enforces restrictions like the character being temporarily blinded, or not being able to see ultraviolet light, etc.
 * A list of skill trees and a list of which skills they have in those trees. Skills are the main way characters get more powerful and gain abilities.
 * Actions they can perform by themselves, similar to actions available in nodes, but you can do these actions anywhere.
 * State data, set by performing actions. This can contain anything you want.
-* Stats, defining a character's basic abilities to do things like lift heavy objects or speak eloquently.
+* TODO Stats, defining a character's basic abilities to do things like lift heavy objects or speak eloquently.
 
 # The character tag itself
 The character tag itself has a number of attributes you can give it. Only `id` is required.
@@ -35,7 +35,7 @@ The `tree` attribute points to the id defined in a `skill_tree` tag. The `id` at
 If you don't specify `ignore_prerequisites="True"` in your skill tag, and the character doesn't actually meet the prerequisites for having a skill, an error will be thrown.
 
 ### template_action
-TODO
+[template_action tags](template_action.md) provide templates for actions which you can reuse, without needing to configure all of the triggers, conditions and logic necessary to make them work every single time. Providing them at the character level makes them available to the character at all nodes.
 
 ### action
 [action](common_action.md) tags are common among nodes and characters, and in both spots, they follow the same rules, and do the same thing. When in characters, they provide characters the ability to perform the action anywhere, by typing in a command which fits the `trigger`s, and as long as the `condition`s are met, the `effect`s occur. See the [action page itself](common_action.md) for more information.

@@ -19,13 +19,14 @@ class Character(object):
 		if xml != None:
 			self.logger.debug('handling character tag')
 			validateNoTextOrTail(element)
-			validateAttributes(element, ['id'], ['species'])
 			
+			# attributes
+			validateAttributes(element, ['id'], ['species', 'node'])
 			self.id = element.attrib['id']
-			self.speciesID = element.attrib['species']
+			self.speciesID = element.attrib.get('species', None)
 			
 			# children
-			sortedChildren = sortChildren(xml, ['state_var', 'action', 'template_action'])
+			sortedChildren = sortChildren(xml, ['state_var', 'action', 'template_action', 'skill'])
 			
 			for stateVar in sortedChildren.get('state_var', []):
 				self.logger.debug('handling state_var')
@@ -42,12 +43,26 @@ class Character(object):
 				self.logger.debug('handling template action tag')
 				self.addTemplateAction(TemplateAction(xml = templateAction, defaultLang = self.defaultLang))
 				
-			# TODO: this is gonna get much more complicated
-			# TODO: if node is present, but xml specifies a node, blow up.
+			for knownSkill in sortedChildren.get('skill', []):
+				self.logger.debug('handling known skill tag')
+				validateNoChildren(knownSkill)
+				validateNoTextOrTail(knownSkill)
+				validateAttributes(knownSkill, ['id', 'skill'], ['ignore_prerequisites'])
+				# TODO
 			
-			# validation stuff
-			# TODO: set node from constructor arg if not provided in xml
-			# TODO: if we don't have a node at this point, and it's not provided in constructor, it was never specified, so we need to blow up.
+			# node
+			xmlNode = element.attrib.get('node', None)
+			if xmlNode != None:
+				# provided in xml, so it needs to not be in the constructor
+				if node != None:
+					raise BadXMLError('character is defined in a node, but it declares a node in its tag. You can only do one or the other.')
+				else:
+					self.currentNodeID = xmlNode
+			else:
+				# not provided in xml
+				self.currentNodeID = node
+				if node == None:
+					raise ValueError('Node not provided. Characters must have nodes.')
 		
 	def getNodeLangText(self):
 		return self.water.getNode(self.currentNodeID).textBlock
@@ -62,6 +77,8 @@ class Character(object):
 		possible = []
 		possible.extend(self.getNode().actions)
 		possible.extend(self.actions)
+		if self.species != None:
+			possible.extend(self.species.actions)
 		self.logger.debug('All possible actions: [%s]', ", ".join([str(x) for x in possible]))
 		
 		# see if we match any of them
@@ -163,6 +180,11 @@ class Character(object):
 		for action in self.templateActions:
 			if action.id == id:
 				return action
+		# from species
+		if self.species != None:
+			for action in self.species.templateActions:
+				if action.id == id:
+					return action
 		# from Water
 		if fromEverywhere:
 			fromWater = self.water.getTemplateAction(id)

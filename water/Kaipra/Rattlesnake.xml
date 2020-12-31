@@ -129,5 +129,21 @@
 			<trigger target_for="look"> Grate </trigger>
 			<effect type="display_text"> There is a grate that takes up most of the floor of the vent. It leads down into the mess hall, where you can see four people. They are all sitting at a single square table eating lunch. One of them is a female human. Sitting across from her is a Meiv'os man. Sitting next to the Meiv'os is a Aguahente man in officer's garb. Finally, there is a male human sitting next to the female human. </effect>
 		</action>
+		
+		<character id="rat" species="rat">
+			<skill tree="PC" id="pistol_proficiency" />
+			<skill tree="PC" id="fan_the_hammer" />
+			<template_action id="look">
+				<matched_text> look </matched_text>
+				<matched_text> read </matched_text>
+			</template_action>
+			<action>
+				<trigger target_for="look"> myself </trigger>
+				<trigger target_for="look"> me </trigger>
+				<effect type="display_text"> You're one attractive dude. </effect>
+			</action>
+			<state_var name="hair_good" type="boolean" default="True" />
+		</character>
+		
 	</node>
 </water>

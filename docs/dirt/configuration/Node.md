@@ -8,7 +8,7 @@ Nodes can have the following:
 * **Characters**: Characters can be defined inside a node as a convenience feature. This is exactly the same as defining them at the top level, but their default node is set to the node you define them in.
 
 ## The Node Tag
-Here's a full example node tag, with everything in it which is possible to include:
+Here's a full example node tag, with most of the things in it which are possible to include:
 ```
 <node id="Cell 4414a">
 	<text_block>
@@ -60,4 +60,4 @@ Characters can be defined in nodes, purely as a convenience feature. Defining a 
 The only reason to do this is as an organization mechanism; you do this if the character always starts in the node (maybe this node is the guard's room), or never leaves it (maybe it's a gun turret), or if it's easier for you to remember where they're defined if you define them in the node (maybe you're making a ship with passengers, and this node is the room they're staying in, so they always start here, but they can leave it).
 
 ### Template actions
-TODO
+[template_action tags](template_action.md) provide templates for actions which you can reuse, without needing to configure all of the triggers, conditions and logic necessary to make them work every single time. Providing them at the node level makes them available to all characters in the node. This is a bit of a strange use case, but it could be useful if you have one very complicated set of logic which you want to configure for many actions within one node.
