@@ -2,6 +2,7 @@ import logging
 
 from .effects import BadCommandTextEffect
 from .xmlUtil import *
+from .util import parseBoolNoneSafe
 
 class Character(object):
 	def __init__(self, owningWater = None, xml = None, node = None):
@@ -12,6 +13,7 @@ class Character(object):
 		self.state = {}
 		self.actions = []
 		self.speciesID = None
+		self.skills = {}
 		
 		self.water = owningWater
 		self.queuedEffects = []
@@ -49,7 +51,7 @@ class Character(object):
 				validateNoChildren(knownSkill)
 				validateNoTextOrTail(knownSkill)
 				validateAttributes(knownSkill, ['id', 'skill'], ['ignore_prerequisites'])
-				# TODO
+				self.learnSkill(knownSkill.attrib['id'], knownSkill.attrib['skill'], parseBoolNoneSafe(knownSkill.attrib.get('ignore_prerequisites', None), False))
 			
 			# node
 			xmlNode = element.attrib.get('node', None)
@@ -227,4 +229,27 @@ class Character(object):
 		
 	def addAction(self, action):
 		self.actions.append(action)
+		
+	def learnSkill(self, treeID, skillID, ignorePrerequisites = False):
+		treeList = self.skills.setdefault(treeID, [])
+		# remove if we already have it
+		for index, skill in enumerate(treeList):
+			if skill[0] == skillID:
+				del treeList[index]
+		# add
+		treeList.append((skillID, ignorePrerequisites))
+		
+	def hasSkill(self, treeID, skillID):
+		treeList = self.skills.get(treeID, [])
+		for skill in treeList:
+			if skill[0] == skillID:
+				return True
+		return False
+	
+	def skillIgnoresPrerequisites(self, treeID, skillID, defaultIfSkillNotKnown = None):
+		treeList = self.skills.get(treeID, [])
+		for skill in treeList:
+			if skill[0] == skillID:
+				return skill[1]
+		return defaultIfSkillNotKnown
 	

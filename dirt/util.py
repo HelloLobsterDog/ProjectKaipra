@@ -19,9 +19,7 @@ def parseMatchTypes(text, matchTo):
 	if isinstance(matchTo, str):
 		return str(text)
 	elif isinstance(matchTo, bool):
-		if not text.strip().lower() in ['true', 'false']:
-			raise RuntimeError('text being parsed to bool "{}" is not true or false.'.format(text))
-		return text.strip().lower() == 'true'
+		return parseBool(text)
 	elif isinstance(matchTo, int):
 		return int(text)
 	elif isinstance(matchTo, float):
@@ -29,3 +27,16 @@ def parseMatchTypes(text, matchTo):
 		
 	else:
 		raise RuntimeError('Unable to determine type of variable to parse to: {}'.format(matchTo))
+
+
+
+def parseBool(text):
+	if not text.strip().lower() in ['true', 'false']:
+		raise ValueError('text being parsed to bool "{}" is not true or false.'.format(text))
+	return text.strip().lower() == 'true'
+
+def parseBoolNoneSafe(text, default = None):
+	if text == None:
+		return False
+	else:
+		return parseBool(text)
