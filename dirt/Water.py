@@ -7,6 +7,7 @@ from .Node import Node
 from .Character import Character
 from .TemplateAction import TemplateAction
 from .SkillTree import SkillTree
+from .Species import Species
 
 class Water(object):
 	def __init__(self, server = None, xmlFilePath = None, xmlString = None):
@@ -16,6 +17,7 @@ class Water(object):
 		self.characters = []
 		self.templateActions = []
 		self.skillTrees = []
+		self.species = []
 		
 		self.charactersWithActions = []
 		self.validationIssues = []
@@ -90,7 +92,7 @@ class Water(object):
 					
 				elif child.tag == 'species':
 					self.logger.debug('Parsing species tag (#%d)', index + 1)
-					raise NotImplementedError('TODO: make species') # TODO make species
+					self.addSpecies(Species(xml = child, owningWater = self))
 					
 				else:
 					raise BadXMLError('child tag #{} of root named "{}" not recognized'.format(index + 1, child.tag))
@@ -199,6 +201,19 @@ class Water(object):
 		for child in self.nodes:
 			if child.id == id:
 				return child
+		return None
+		
+	def addSpecies(self, species):
+		# check for duplicates
+		for species in self.species:
+			if species.id == id:
+				raise RuntimeError('species id %s is duplicated'.format(species.id))
+		self.species.append(species)
+	
+	def getSpecies(self, id):
+		for species in self.species:
+			if species.id == id:
+				return species
 		return None
 		
 	def addTemplateAction(self, action):

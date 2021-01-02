@@ -11,6 +11,7 @@ class Character(object):
 		self.templateActions = []
 		self.state = {}
 		self.actions = []
+		self.speciesID = None
 		
 		self.water = owningWater
 		self.queuedEffects = []
@@ -37,11 +38,11 @@ class Character(object):
 			
 			for action in sortedChildren.get('action', []):
 				self.logger.debug('handling action tag')
-				self.addAction(Action(action, self.defaultLang))
+				self.addAction(Action(action, self.water.defaultLang))
 			
 			for templateAction in sortedChildren.get('template_action', []):
 				self.logger.debug('handling template action tag')
-				self.addTemplateAction(TemplateAction(xml = templateAction, defaultLang = self.defaultLang))
+				self.addTemplateAction(TemplateAction(xml = templateAction, defaultLang = self.water.defaultLang))
 				
 			for knownSkill in sortedChildren.get('skill', []):
 				self.logger.debug('handling known skill tag')
@@ -63,6 +64,18 @@ class Character(object):
 				self.currentNodeID = node
 				if node == None:
 					raise ValueError('Node not provided. Characters must have nodes.')
+					
+					
+					
+	@property
+	def hasSpecies(self):
+		return self.speciesID != None
+	
+	@property
+	def species(self):
+		return self.water.getSpecies(self.speciesID)
+		
+		
 		
 	def getNodeLangText(self):
 		return self.water.getNode(self.currentNodeID).textBlock
@@ -73,16 +86,12 @@ class Character(object):
 			
 		self.logger.info('Character id "%s" is attempting to perform action text "%s" with lang %s', self.id, text, lang)
 		
-		# compile a list of actions that can be performed
-		possible = []
-		possible.extend(self.getNode().actions)
-		possible.extend(self.actions)
-		if self.species != None:
-			possible.extend(self.species.actions)
-		self.logger.debug('All possible actions: [%s]', ", ".join([str(x) for x in possible]))
+		# logging for all available actions.
+		if self.logger.isEnabledFor(logging.DEBUG):
+			self.logger.debug('All possible actions: [%s]', ", ".join([str(x) for x in self.getAllAvailableActions()]))
 		
-		# see if we match any of them
-		for action in possible:
+		# see if we match any of our available actions
+		for action in self.getAllAvailableActions():
 			self.logger.debug('checking if action matches: ' + str(action))
 			if action.matches(text, lang, self):
 				# check conditions
@@ -162,6 +171,8 @@ class Character(object):
 		if self.controller != None: # the only thing this stores for the moment is the userID, so non-none means controlled by a player
 			self.water.server.send(self.controller, langText)
 			
+			
+			
 	def addTemplateAction(self, action):
 		# check for duplicates
 		for templateAction in self.templateActions:
@@ -170,7 +181,21 @@ class Character(object):
 		# add
 		self.templateActions.append(action)
 	
+	def getAllAvailableActions(self):
+		'''
+		Returns a generator which iterates over all the actions available to the character.
+		'''
+		yield from self.getNode().actions
+		yield from self.actions
+		if self.hasSpecies:
+			yield from self.species.actions
+	
 	def getTemplateAction(self, id, fromEverywhere = True):
+		'''
+		Looks up a template action that is available to us given it's ID.
+		If not found, returns None.
+		If fromEverywhere is True, it will look everywhere that is available to us, if false, it will only look in the character's template actions, and our species template actions.
+		'''
 		# node
 		if fromEverywhere:
 			fromNode = self.getNode().getTemplateAction(id)
@@ -181,7 +206,7 @@ class Character(object):
 			if action.id == id:
 				return action
 		# from species
-		if self.species != None:
+		if self.hasSpecies:
 			for action in self.species.templateActions:
 				if action.id == id:
 					return action
