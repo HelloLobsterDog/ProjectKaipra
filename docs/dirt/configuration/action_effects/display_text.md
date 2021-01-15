@@ -1,2 +1,2 @@
-# `display_text`
+# `display_text` Effect Configuration
 TODO
