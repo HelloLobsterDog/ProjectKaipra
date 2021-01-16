@@ -3,6 +3,8 @@ import logging
 from .effects import BadCommandTextEffect
 from .xmlUtil import *
 from .util import parseBoolNoneSafe
+from .Action import Action
+from .TemplateAction import TemplateAction
 
 class Character(object):
 	def __init__(self, owningWater = None, xml = None, node = None):
@@ -21,12 +23,12 @@ class Character(object):
 		
 		if xml != None:
 			self.logger.debug('handling character tag')
-			validateNoTextOrTail(element)
+			validateNoTextOrTail(xml)
 			
 			# attributes
-			validateAttributes(element, ['id'], ['species', 'node'])
-			self.id = element.attrib['id']
-			self.speciesID = element.attrib.get('species', None)
+			validateAttributes(xml, ['id'], ['species', 'node'])
+			self.id = xml.attrib['id']
+			self.speciesID = xml.attrib.get('species', None)
 			
 			# children
 			sortedChildren = sortChildren(xml, ['state_var', 'action', 'template_action', 'skill'])
@@ -50,11 +52,11 @@ class Character(object):
 				self.logger.debug('handling known skill tag')
 				validateNoChildren(knownSkill)
 				validateNoTextOrTail(knownSkill)
-				validateAttributes(knownSkill, ['id', 'skill'], ['ignore_prerequisites'])
-				self.learnSkill(knownSkill.attrib['id'], knownSkill.attrib['skill'], parseBoolNoneSafe(knownSkill.attrib.get('ignore_prerequisites', None), False))
+				validateAttributes(knownSkill, ['tree', 'id'], ['ignore_prerequisites'])
+				self.learnSkill(knownSkill.attrib['tree'], knownSkill.attrib['id'], parseBoolNoneSafe(knownSkill.attrib.get('ignore_prerequisites', None), False))
 			
 			# node
-			xmlNode = element.attrib.get('node', None)
+			xmlNode = xml.attrib.get('node', None)
 			if xmlNode != None:
 				# provided in xml, so it needs to not be in the constructor
 				if node != None:
