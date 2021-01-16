@@ -66,9 +66,15 @@ class Character(object):
 				self.currentNodeID = node
 				if node == None:
 					raise ValueError('Node not provided. Characters must have nodes.')
-					
-					
-					
+	
+	def copyFrom(self, target, copyList):
+		if copyList == None:
+			copyList = ['currentNodeID', 'templateActions', 'state', 'actions', 'speciesID', 'skills']
+		for thing in copyList:
+			setattr(this, thing, getattr(target, thing))
+	
+	
+	
 	@property
 	def hasSpecies(self):
 		return self.speciesID != None
